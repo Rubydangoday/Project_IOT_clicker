@@ -1,7 +1,6 @@
 # Project_IOT_clicker — Hệ thống phản hồi lớp học dùng Remote nRF52840 (ARS)
 
-Báo cáo môn học **IoT (IOTS337929)**, Nhóm 2, Bộ môn Cơ điện tử, Khoa Cơ khí, Trường Đại học Công nghệ Kỹ thuật TP.HCM, tháng 10/2026.
-
+Báo cáo môn học **IoT (IOTS337929)**, Nhóm 2, 
 **ARS (Audience Response System)** là hệ thống hỏi–đáp trên lớp:
 - Mỗi học sinh có một **Remote nRF52840** do nhóm tự thiết kế mạch.
 - **Laptop giáo viên** vừa là máy chủ, vừa dùng Bluetooth sẵn có để thu đáp án, không cần thiết bị trung gian.
