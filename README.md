@@ -68,6 +68,12 @@ Mạch 2 lớp 68×80 mm thiết kế bằng KiCad, gồm module nRF52840 SuperM
 |:---:|:---:|
 | ![PCB mặt trên](hardware/images/PCB_mattren.jpeg) | ![PCB mặt dưới](hardware/images/PCB_matduoi.jpeg) |
 
+**Mạch thật đã lắp ráp** (Remote chạy bằng 2 pin AA, LED 7 đoạn đang hiển thị)
+
+| | |
+|:---:|:---:|
+| <img src="hardware/images/Mach_that_1.jpg" alt="Remote thật, nhìn từ trên" width="320"> | <img src="hardware/images/Mach_that_2.jpg" alt="Remote thật, nhìn chính diện" width="320"> |
+
 ## Tính năng chính
 
 | Khối | Tính năng |
