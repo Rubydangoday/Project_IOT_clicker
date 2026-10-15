@@ -57,6 +57,18 @@ Project_IOT_clicker/
 
 Remote và bộ thu **chỉ truyền/nhận**. Mọi kiểm tra hợp lệ nằm ở bộ xử lý gói, nên muốn đổi luật chỉ cần sửa máy chủ, không phải nạp lại hàng chục Remote.
 
+## Phần cứng Remote
+
+Mạch 2 lớp 68×80 mm thiết kế bằng KiCad, gồm module nRF52840 SuperMini, bàn phím ma trận 14 phím, LED 7 đoạn 2 chữ số, đèn đỏ/xanh và nguồn 2 pin AA. File gốc nằm trong [hardware/kicad/](hardware/kicad/), Gerber trong [hardware/kicad/gerber_prototype/](hardware/kicad/gerber_prototype/), danh sách linh kiện trong [hardware/BOM_linhkien_nhom2.xlsx](hardware/BOM_linhkien_nhom2.xlsx).
+
+**Sơ đồ nguyên lý**
+
+![Sơ đồ nguyên lý Remote](hardware/images/Schematic.jpg)
+
+| PCB mặt trên | PCB mặt dưới |
+|:---:|:---:|
+| ![PCB mặt trên](hardware/images/PCB_mattren.jpeg) | ![PCB mặt dưới](hardware/images/PCB_matduoi.jpeg) |
+
 ## Tính năng chính
 
 | Khối | Tính năng |
