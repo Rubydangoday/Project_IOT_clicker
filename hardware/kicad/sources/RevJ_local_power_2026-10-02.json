@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-02",
+  "boost": {
+    "url": "https://icdayroi.com/mach-nguon-tang-ap-dc-0-9-5v-sang-5v-usb",
+    "price_vnd": 10000,
+    "vin_shop_v": [
+      0.9,
+      5
+    ],
+    "vout_shop_v": 5,
+    "size_shop_mm": [
+      34,
+      16.2
+    ],
+    "height_unknown": true,
+    "iq_unknown": true,
+    "manufacturer_datasheet_available": false,
+    "mount": "External insulated module; solder wires via J5/J6; no assumed pad pattern"
+  },
+  "usb_a": {
+    "url": "https://www.thegioiic.com/day-usb-type-a-duc-noi-xh2-54-2-chan-dai-50cm",
+    "sku": "IC20985",
+    "price_vnd": 26220,
+    "inventory_at_check": 16,
+    "use": "USB-A into boost, cut XH and shorten cable, reuse offcut for boost input"
+  },
+  "obsolete_removed": [
+    "TPS61099DRVR",
+    "SRN4018-2R2M",
+    "RC0603FR-07249KL",
+    "R19",
+    "C3",
+    "C4"
+  ],
+  "qualify_before_use": [
+    "Polarity continuity",
+    "5V no-load and loaded",
+    "Startup with BLE/LED at 3.2,3.0,2.4,2.0V input",
+    "Input current and output ripple",
+    "Module height and fixing with cables"
+  ]
+}

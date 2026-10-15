@@ -1,0 +1,150 @@
+--- /mnt/data/ble_scan_v3_10_4.py	2026-10-12 05:41:16.824784411 +0000
++++ /mnt/data/ble_scan_v3_10_5_single_remote.py	2026-10-12 06:10:07.765403427 +0000
+@@ -4,7 +4,8 @@
+ Chiều lên:  quét gói quảng bá BLE, lọc Manufacturer Data mã công ty [ble] company_id + byte 0xA5 (định dạng: bridge/blecodec.py)
+             → JSON giống gateway USB → MQTT  ars/<room>/resp   (QoS 1, "via":"ble")
+ Chiều xuống: MQTT  ars/<ROOM>/cmd/gw  và bản giữ lại  ars/<ROOM>/state  → STATE / ATTEND / OPENMASK / ACKS.
+-            V3.10.4 giữ scan liên tục và dùng ACK/ATTEND burst dài nhưng có giới hạn; background beacon bị hoãn khi exact ACK còn pending.
++            V3.10.5-single tối ưu cho 1 Remote: scan liên tục, ACK được canh gần cuối TX burst của nRF,
++            ACK/ATTEND ngắn hơn và background heartbeat thưa để giảm airtime của hci0.
+             BlueZ chỉ dùng trên Linux; Windows/macOS hiện chỉ nghe, Remote không nhận được trạng thái.
+ Trạng thái:  ars/<ROOM>/gw/status  = {"online": true, "port": "bluetooth hci0", "pkt_per_s": ...}  (Last Will = offline)
+ 
+@@ -117,23 +118,19 @@
+ 
+ 
+ class Advertiser:
+-    """Dieu phoi BLE downlink tren mot adapter laptop duy nhat (V3.10.4).
++    """Dieu phoi BLE downlink tren mot adapter laptop duy nhat (V3.10.5-single).
+ 
+-    Nguyen tac V3.10.4:
+-      * Mac dinh uu tien SCAN uplink; background beacon chi phat burst ngan va
+-        bo qua cac heartbeat trung nhau trong mot khoang thoi gian.
+-      * Exact ACK khong con nam tren song suot TTL 1.8 s. Moi ACK chi phat mot
+-        burst ngan, sau do tat de tra radio ve cho scan.
+-      * Ban ghi ACK van duoc cache den khi ingest gui ``ACKS -``. Neu Remote
+-        retry cung transaction, bridge tu re-arm mot ACK burst ma khong can
+-        ingest phai publish lai noi dung ACK giong het.
+-      * Trong luc con ACK pending (du da tat song sau burst), background frame
+-        bi hoan. Day la cua so "pure scan" de bat retry cua Remote.
+-      * LOGIN cu/da diem danh co the re-arm ATTEND truc tiep tu snapshot dang
+-        cache, giup LOGIN khong phu thuoc heartbeat 5 s.
++    Nguyen tac V3.10.5-single:
++      * Uu tien mot Remote duy nhat: scan lien tuc la mac dinh.
++      * Exact ACK 20-30 ms van giu, nhung canh ACK gan cuoi TX burst 150 ms
++        cua Remote va chi phat 300 ms (~10-15 advertising events).
++      * ATTEND/STATE/OPENMASK phat ngan; heartbeat background y het chi lap lai
++        sau 60 s. Thay doi that van duoc phat ngay.
++      * ACK record van cache den ``ACKS -``; retry cung transaction co the re-arm
++        mot ACK burst moi ma khong can ingest publish lai payload giong het.
++      * Khi ACK pending, background bi hoan de hci0 uu tien scan uplink.
+ 
+-    Muc tieu: giam tranh chap scan/advertise tren cung hci0 ma khong doi
+-    protocol va khong can flash lai firmware Remote V3.10.
++    Muc tieu: toi uu reliability + latency cho 1 Remote, khong toi uu multi-Remote.
+     """
+ 
+     BACKGROUND = (blecodec.F_STATE, blecodec.F_ATTEND, blecodec.F_OPENMASK)
+@@ -142,32 +139,30 @@
+     # ATTEND la xac nhan LOGIN nen duoc phat nhanh va theo mot cua so uu tien rieng.
+     # STATE/OPENMASK van la background burst ngan.
+     BURST_TTL = {
+-        blecodec.F_ATTEND: 0.90,
+-        blecodec.F_STATE: 0.18,
+-        blecodec.F_OPENMASK: 0.18,
++        blecodec.F_ATTEND: 0.35,
++        blecodec.F_STATE: 0.12,
++        blecodec.F_OPENMASK: 0.12,
+     }
+     # Ingest heartbeat mac dinh 5 s. Bridge khong can phat lai y het moi 5 s;
+     # 12 s la recovery heartbeat, con thay doi that se phat ngay.
+     BG_REFRESH_MIN_S = {
+-        blecodec.F_ATTEND: 12.0,
+-        blecodec.F_STATE: 12.0,
+-        blecodec.F_OPENMASK: 12.0,
++        blecodec.F_ATTEND: 60.0,
++        blecodec.F_STATE: 60.0,
++        blecodec.F_OPENMASK: 60.0,
+     }
+-    BG_INTER_BURST_GAP_S = 0.12
+-    BG_AFTER_ACK_CLEAR_S = 0.10
++    BG_INTER_BURST_GAP_S = 0.06
++    BG_AFTER_ACK_CLEAR_S = 0.05
+ 
+-    # V3.10.4: KHONG stop/start scanner cho ACK. Thu nghiem V3.10.3 cho thay
+-    # full-exclusive 320 ms lam final ACK giam manh du uplink van tot. Ta de
+-    # controller tu scheduler scan+advertise va giu ACK tren song du lau de nRF
+-    # co nhieu co hoi bat duoc trong cua so RX 1000 ms.
++    # V3.10.5-single: actual HCI interval da duoc xac minh la 20-30 ms sau khi
++    # bat BlueZ Experimental. Canh ACK gan cuoi TX burst 150 ms cua nRF de
++    # khong lang phi phan dau khi Remote con dang TX. 300 ms cho ~10-15 event.
+     ACK_COALESCE_S = 0.02
+-    ACK_ALIGN_S = 0.02
+-    ACK_BURST_S = 0.85
+-    ACK_REARM_MIN_GAP_S = 0.90
+-
+-    # ATTEND la LOGIN confirmation. Phat lau hon background frame nhung van
+-    # khong pause scanner de tranh mat uplink/retry do Bleak stop/start.
+-    LOGIN_ATTEND_ALIGN_S = 0.04
++    ACK_ALIGN_S = 0.08
++    ACK_BURST_S = 0.30
++    ACK_REARM_MIN_GAP_S = 0.45
++
++    # ATTEND la LOGIN confirmation. Canh nhe sau LOGIN TX va phat 350 ms.
++    LOGIN_ATTEND_ALIGN_S = 0.08
+ 
+     def __init__(self, adapter, company_id, scan_controller=None):
+         self.adapter, self.company = adapter, company_id
+@@ -396,8 +391,8 @@
+                 await self._deactivate_locked(bg)
+ 
+         mono = time.monotonic()
+-        # V3.10.4: khong pause scanner. BlueZ/controller tu chia lich radio cho
+-        # scan + advertising; ACK burst dai 850 ms de tang xac suat downlink.
++        # V3.10.5-single: khong pause scanner. ACK ngan va duoc align gan cuoi
++        # TX burst de tang overlap voi cua so RX cua Remote.
+         if not await self._activate_locked(blecodec.F_ACKS, data):
+             return False
+ 
+@@ -471,8 +466,8 @@
+                 self.bg_pending.add(active_bg)
+                 await self._deactivate_locked(active_bg)
+             self.bg_pending.discard(blecodec.F_ATTEND)
+-            # V3.10.4: khong pause scanner; ATTEND pulse 900 ms de Remote co
+-            # nhieu co hoi bat bit attendance trong RX window.
++            # V3.10.5-single: khong pause scanner; ATTEND pulse 350 ms la du
++            # cho 1 Remote khi interval that 40-60 ms.
+             if await self._activate_locked(blecodec.F_ATTEND, data):
+                 self._schedule_expiry_locked(blecodec.F_ATTEND, data)
+                 log.info('DIAG ATTEND REARM seat=%d after LOGIN retry burst_ms=%d',
+@@ -600,16 +595,18 @@
+         except Exception as e:
+             log.warning('Không bật được Bluetooth %s: %s', adapter, e)
+     if adv:
+-        # V3.10.4: bidirectional mode bat buoc ca scan va advertise.
++        # V3.10.5-single: bidirectional mode bat buoc ca scan va advertise.
+         # Nếu BlueZ/hci0 chưa sẵn sàng lúc boot thì KHÔNG rơi vĩnh viễn vào
+         # chế độ uplink-only; chờ và thử lại cho tới khi advertiser sẵn sàng.
+         while True:
+             try:
+                 await adv.start()
+                 log.info('DIAG BLE TX READY adapter=%s', adapter)
+-                log.info('DIAG V3.10.4 RADIO ack_burst_ms=%d attend_burst_ms=%d scan=continuous',
++                log.info('DIAG V3.10.5 SINGLE_REMOTE ack_burst_ms=%d ack_align_ms=%d attend_burst_ms=%d bg_refresh_s=%d scan=continuous',
+                          round(adv.ACK_BURST_S * 1000),
+-                         round(adv.BURST_TTL[blecodec.F_ATTEND] * 1000))
++                         round(adv.ACK_ALIGN_S * 1000),
++                         round(adv.BURST_TTL[blecodec.F_ATTEND] * 1000),
++                         round(adv.BG_REFRESH_MIN_S[blecodec.F_STATE]))
+                 break
+             except Exception as e:
+                 log.warning('BLE advertiser %s chưa sẵn sàng (%s) - thử lại sau 3 s', adapter, e)
+@@ -681,7 +678,7 @@
+         try:
+             await scan_ctl.attach_and_start(scanner)
+             log.info('Dang nghe Remote qua Bluetooth %s (room %d, company 0x%04X)%s', adapter, room, company,
+-                     ', V3.10.4 continuous scan + long bounded ACK/ATTEND + retry re-arm' if adv else '')
++                     ', V3.10.5 single-Remote radio-balanced + retry re-arm' if adv else '')
+             while True:
+                 await asyncio.sleep(5)
+                 n, counters['n'] = counters['n'], 0

@@ -1,0 +1,39 @@
+{
+  "revision": "J",
+  "tracks_mm": [
+    0.25
+  ],
+  "zones": [
+    {
+      "net": "GND",
+      "clearance_mm": 0.508,
+      "thermal_gap_mm": 0.508,
+      "layer": "F.Cu"
+    },
+    {
+      "net": "GND",
+      "clearance_mm": 0.508,
+      "thermal_gap_mm": 0.508,
+      "layer": "B.Cu"
+    }
+  ],
+  "pin_nets": {
+    "J5.1": "/VIN_AA",
+    "J5.2": "GND",
+    "J6.1": "/USB_5V",
+    "J6.2": "GND",
+    "J4.1": "/USB_5V",
+    "J4.2": "GND",
+    "Q1.1": "GND",
+    "Q1.2": "/VIN_AA",
+    "Q1.3": "/AA_SW",
+    "SW15.2": "/AA_RAW",
+    "SW15.3": "/AA_SW",
+    "J3.1": "unconnected-(J3-Pin_1-Pad1)"
+  },
+  "onboard_boost_removed": true,
+  "module_connection": "U1 external, no footprint assumed. J5 input wire pair; J6 USB-A output wire pair; J4 USB-C output wire pair.",
+  "minimum_copper_clearance_mm": 0.23,
+  "track_count": 1035,
+  "drc_exclusions": []
+}

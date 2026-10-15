@@ -1,0 +1,116 @@
+{
+  "product": {
+    "id": 20867,
+    "name": "Vỉ 2 Viên Pin Kiềm Alkaline AA LR6 2PK Voniko 1.5V",
+    "description": null,
+    "unit": "Vỉ",
+    "info": null,
+    "manufacturer_code": "",
+    "slug": "vi-2-vien-pin-kiem-alkaline-aa-lr6-2pk-voniko-1-5v",
+    "image_id": 32553,
+    "inventory": 26,
+    "rohs": false,
+    "supplier_id": 223,
+    "price": 19600,
+    "category_id": 345,
+    "product_tag_id": null,
+    "sheetfile": "",
+    "sheetname": "",
+    "show_package": false,
+    "show_weight": false,
+    "weight_unit": null,
+    "price_change": -22,
+    "show_category_extra": false,
+    "multiples": 1,
+    "minimum_order_quantity": 1,
+    "desc_small": "Điện áp: 1.5V, kích thước: 50.5 x 14.5mm",
+    "comments_count": 0,
+    "package_quantity": null,
+    "supplier": {
+      "id": 223,
+      "name": "Voniko",
+      "slug": "voniko"
+    },
+    "product_tag": null,
+    "product_tags": [],
+    "prices": [
+      {
+        "id": 98119,
+        "product_id": 20867,
+        "quantity": 1,
+        "price": 19600
+      }
+    ],
+    "images": [
+      {
+        "product_id": 20867,
+        "image_id": 25337
+      }
+    ],
+    "category_extras": [],
+    "favorites": []
+  },
+  "product_tabs": [
+    {
+      "id": 40496,
+      "product_id": 20867,
+      "title": "Mô tả sản phẩm",
+      "content": "<ul>\r\n<li>Pin kiềm cao cấp</li>\r\n<li>Thời hạn sử dụng 10 năm</li>\r\n<li>Không chứa thủy ngân và cadmium</li>\r\n<li>100% chống rò rỉ</li>\r\n<li>Tốt hơn 6-9 lần so với pin carbon</li>\r\n</ul>"
+    }
+  ],
+  "crumbs": [
+    {
+      "id": 966,
+      "name": "Bộ Nguồn Điện, Pin, Biến Áp",
+      "parent_id": 0,
+      "level": 1,
+      "slug": "bo-nguon-dien-pin-bien-ap"
+    },
+    {
+      "id": 1237,
+      "name": "Pin Không Sạc",
+      "parent_id": 966,
+      "level": 2,
+      "slug": "pin-khong-sac"
+    },
+    {
+      "id": 345,
+      "name": "Pin AA",
+      "parent_id": 1237,
+      "level": 3,
+      "slug": "pin-aa"
+    }
+  ],
+  "product_properties": [
+    {
+      "id": 41057,
+      "name": "Điện áp",
+      "value": "1.5V",
+      "sorted": 1
+    },
+    {
+      "id": 41059,
+      "name": "Kiểu gắn",
+      "value": "Snap-In",
+      "sorted": 2
+    },
+    {
+      "id": 41058,
+      "name": "Kích thước",
+      "value": "50.5 x 14.5mm",
+      "sorted": 3
+    },
+    {
+      "id": 41062,
+      "name": "Chiều dài",
+      "value": "50.5mm",
+      "sorted": 4
+    },
+    {
+      "id": 41063,
+      "name": "Đường kính",
+      "value": "14.5mm",
+      "sorted": 5
+    }
+  ]
+}

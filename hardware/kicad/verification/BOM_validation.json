@@ -1,0 +1,17 @@
+{
+  "revision": "J",
+  "unit_parts_vnd": 251795,
+  "price_change_test": true,
+  "source_date": "2026-10-02",
+  "new_parts": {
+    "boost_vnd": 10000,
+    "usb_a_vnd": 26220
+  },
+  "excluded": [
+    "PCB",
+    "vỏ",
+    "ship",
+    "vật tư gá module"
+  ],
+  "battery_current_unmeasured": true
+}
