@@ -109,10 +109,6 @@ Nạp firmware `firmware/ARS_remote_v3_17/ARS_remote_v3_17.ino` cho Remote (Ardu
 
 **Máy chủ Cloud** (Ubuntu, không cần Bluetooth): `sudo bash deploy/install_ubuntu.sh --cloud`, sau đó làm theo [docs/HUONG_DAN_CLOUD.md](docs/HUONG_DAN_CLOUD.md).
 
-> ⚠️ **Laptop đã cài từ repo cũ** (bố cục `bridge/`, `ingest/`, `db/` ở thư mục gốc) và đang chạy V3.18:
-> - **Không chạy `install_ubuntu.sh` từ repo này.** Lệnh đó đồng bộ theo bố cục mới và xoá thư mục cũ mà dịch vụ Bluetooth đang dùng.
-> - Chỉ cập nhật web/CSDL bằng `sudo bash deploy/upgrade_web_cloud_v318.sh`.
-> - Hoặc cài lại theo thứ tự ở trên.
 
 Hướng dẫn sử dụng: [docs/huong-dan-su-dung/](docs/huong-dan-su-dung/README.md) · Cài đặt chi tiết: [docs/HUONG_DAN_CAI_DAT.md](docs/HUONG_DAN_CAI_DAT.md) · Kỹ thuật: [docs/KY_THUAT_CHI_TIET.md](docs/KY_THUAT_CHI_TIET.md)
 
